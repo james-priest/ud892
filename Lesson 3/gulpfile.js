@@ -3,15 +3,17 @@ var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync').create();
 
-gulp.task('default', ['styles'], function() {
-	gulp.watch('sass/**/*.scss', ['styles']);
+gulp.task('default', ['styles'], function(done) {
+  gulp.watch('sass/**/*.scss', ['styles']);
+  gulp.watch('index.html').on('change', browserSync.reload);
 
 	browserSync.init({
 		server: './'
 	});
+  done();
 });
 
-gulp.task('styles', function() {
+gulp.task('styles', function(done) {
 	gulp.src('sass/**/*.scss')
 		.pipe(sass().on('error', sass.logError))
 		.pipe(autoprefixer({
@@ -19,4 +21,5 @@ gulp.task('styles', function() {
 		}))
 		.pipe(gulp.dest('./css'))
 		.pipe(browserSync.stream());
+	done();
 });
