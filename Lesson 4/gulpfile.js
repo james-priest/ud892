@@ -7,16 +7,18 @@ var browserSync = require('browser-sync').create();
 var eslint = require('gulp-eslint');
 var jasmine = require('gulp-jasmine-phantom');
 
-gulp.task('default', ['styles', 'lint'], function () {
+gulp.task('default', ['styles', 'lint'], function (done) {
   gulp.watch('sass/**/*.scss', ['styles']);
   gulp.watch('js/**/*.js', ['lint']);
+  gulp.watch('./index.html').on('change', browserSync.reload);
 
   browserSync.init({
     server: './'
   });
+  done();
 });
 
-gulp.task('styles', function () {
+gulp.task('styles', function (done) {
   gulp.src('sass/**/*.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({
@@ -24,6 +26,7 @@ gulp.task('styles', function () {
     }))
     .pipe(gulp.dest('./css'))
     .pipe(browserSync.stream());
+  done();
 });
 
 gulp.task('lint', function () {
@@ -37,6 +40,7 @@ gulp.task('lint', function () {
     // To have the process exit with an error code (1) on
     // lint error, return the stream and pipe to failOnError last.
     .pipe(eslint.failOnError());
+  // done();
 });
 
 gulp.task('tests', function () {
