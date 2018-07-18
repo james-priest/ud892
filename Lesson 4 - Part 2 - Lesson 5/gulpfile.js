@@ -12,7 +12,7 @@ var uglify = require('gulp-uglify');
 gulp.task('default', ['copy-html', 'copy-images', 'styles', 'lint', 'scripts'], function() {
 	gulp.watch('sass/**/*.scss', ['styles']);
 	gulp.watch('js/**/*.js', ['lint']);
-	gulp.watch('/index.html', ['copy-html']);
+	gulp.watch('./index.html', ['copy-html']);
 	gulp.watch('./dist/index.html').on('change', browserSync.reload);
 
 	browserSync.init({
